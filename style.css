@@ -36,3 +36,10 @@
 .tile:hover {
 	opacity: 50%;
 }
+
+.displayError {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 5%;
+}
