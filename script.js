@@ -13,11 +13,17 @@
             let numOfGrids = 0;
             while(numOfGrids < 9){
                 const nineGrids = document.createElement("div");
+                nineGrids.classList.add("tile", numOfGrids);
+                this.el.appendChild(nineGrids);
+                this.board.push(nineGrids)
                 numOfGrids++;
-                return nineGrids;
-            }
-            console.log(nineGrids);
-        }
+            };
+        },
+        player1: function(){
+            this.el.addEventListener("click", function(e){
+                console.log(e);
+            })
+        },
     }
     game.init();
 })();

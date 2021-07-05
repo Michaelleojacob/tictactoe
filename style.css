@@ -23,11 +23,16 @@
 	border: 5px solid rgb(80, 22, 80);
 }
 
-.tiles {
+.tile {
 	display: flex;
 	/* background: white; */
+	background: rgb(5, 1, 17);
 	align-items: center;
 	justify-content: center;
 	height: 100px;
 	width: 100px;
+}
+
+.tile:hover {
+	opacity: 50%;
 }
