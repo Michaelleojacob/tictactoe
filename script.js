@@ -1,19 +1,23 @@
-const gameboard = (function(){
-    let board = function(){
-        const htmlgameboard = document.querySelector("#gameboard");
-        let boxes = [];
-        boxCount = 0;
-        while(boxCount<9){
-            boxCount++;
-            boxes.push("box" + boxCount);
-        };
-        for(box of boxes){
-            let tiles = document.createElement("div");
-            tiles.classList.add("tiles");
-            htmlgameboard.appendChild(tiles);
-            tiles.setAttribute('id', box);
+(function(){
+    "use strict";
+    const game = {
+        board: [],
+        init: function(){
+            this.cacheDom();
+            this.displayGrid();
+        },
+        cacheDom: function(){
+            this.el = document.querySelector("#gameboard");
+        },
+        displayGrid: function(){
+            let numOfGrids = 0;
+            while(numOfGrids < 9){
+                const nineGrids = document.createElement("div");
+                numOfGrids++;
+                return nineGrids;
+            }
+            console.log(nineGrids);
         }
     }
-    board();
+    game.init();
 })();
-
