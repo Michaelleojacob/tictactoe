@@ -30,7 +30,7 @@ makeGrid();
 
 function renderPlayerMarkerOnClick(player){
     el.addEventListener("click", function(e){
-        console.log(e);
+        console.log(lastPlayer);
         if(e.target.innerHTML !== ""){
             error.textContent = "This tile has already been picked.";
             return;
@@ -41,21 +41,29 @@ function renderPlayerMarkerOnClick(player){
         }
     }, {once : true});
 }
-renderPlayerMarkerOnClick("X");
+// renderPlayerMarkerOnClick();
 
-// function player1(){
-//     renderPlayerMarkerOnClick("X");
-//     lastPlayer = "X";
-// }
+function player1(){
+    renderPlayerMarkerOnClick("X");
+    lastPlayer = "X";
+}
 
-// function player2(){
-//     renderPlayerMarkerOnClick("O");
-//     lastPlayer = "O";
-// }
+function player2(){
+    renderPlayerMarkerOnClick("O");
+    lastPlayer = "O";
+}
 
-// function decideTurn(turn){
-//     if(turn === "O"){
-//         return player1();
-//     }
-//     else return player2();
-// }
+function decideTurn(turn){
+    let i=0;
+    while(i<9){
+        if(turn === "O"){
+            renderPlayerMarkerOnClick("X")
+            i++;
+        }
+        else{
+            renderPlayerMarkerOnClick("O")
+            i++;
+        }
+    }
+}
+decideTurn(lastPlayer);
