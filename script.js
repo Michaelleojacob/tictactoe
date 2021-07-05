@@ -2,10 +2,10 @@
     "use strict";
     const game = {
         board: [],
+        lastPlayer: "O",
         init: function(){
             this.cacheDom();
             this.displayGrid();
-            this.playerTurn();
         },
         cacheDom: function(){
             this.el = document.querySelector("#gameboard");
@@ -23,10 +23,19 @@
         },
         renderPlayerMarkerOnClick: function(player){
             this.el.addEventListener("click", function(e){
-                if(e.target.innerHTML !== "")return;
+                console.log(player)
+                console.log(game.lastPlayer);
+                if(game.lastPlayer === player)return;
+                if(e.target.innerHTML !== ""){
+                    game.error.textContent = "This tile has already been picked.";
+                    return;
+                }
                 if(e.target.className.includes("tile")){
                     e.target.innerHTML = player;
+                    game.error.textContent = "";
+                    console.log(game.lastPlayer);
                 }
+                return game.lastPlayer = player;
             })
         },
         player1: function(){
@@ -36,14 +45,12 @@
             this.renderPlayerMarkerOnClick("O");
         },
         playerTurn: function(){
-            let lastPlayer= 1;
-            if(lastPlayer === 1){
+            console.log(game.lastPlayer);
+            if(game.lastPlayer === "O"){
                 this.player1();
-                lastPlayer = 0;
             }
             else{
                 this.player2();
-                lastPlayer = 1;
             }
         },
     }
