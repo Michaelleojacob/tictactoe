@@ -15,6 +15,7 @@
             this.container = document.querySelector("#gameboard");
             this.error = document.querySelector(".displayError");
             this.restartbtn = document.querySelector(".restart");
+            this.turnDisplay = document.querySelector(".turn");
         },
         displayGrid: function(){
             let numOfGrids = 0;
@@ -28,10 +29,11 @@
         },
         handleRenderLogic: function(e, player){
             if(e.target.className.includes("tile")){
-                e.target.innerHTML = player;
-                game.error.textContent = "";
+                e.target.innerText = player;
+                game.error.innerText = "";
                 game.board[game.board.indexOf(e.target)] = player;
                 game.lastPlayer = player;
+                game.lastPlayer === "O" ? game.turnDisplay.innerText = "Turn: player X" : game.turnDisplay.innerText = "Turn: player O"  
                 game.checkForWinner(player);
                 return game.playerTurn();
             }
@@ -39,9 +41,10 @@
         renderPlayerMarkerOnClick: function(player){
             this.el.addEventListener("click", function(e){
                 const myEvent = e;
+                console.log(game.lastPlayer)
                 if(game.gameOver === true) return;
-                if(e.target.innerHTML !== ""){
-                    game.error.textContent = "This tile has already been picked.";
+                if(e.target.innerText !== ""){
+                    game.error.innerText = "This tile has already been picked.";
                     return game.playerTurn();
                 }
                 game.handleRenderLogic(myEvent, player);
@@ -54,6 +57,8 @@
             game.renderPlayerMarkerOnClick("O");
         },
         playerTurn: function(){
+            console.log(game.lastPlayer)
+            if(game.gameOver === true) return;
             if(game.lastPlayer === "O"){
                 game.player1();
             }
@@ -64,17 +69,19 @@
         checkForWinner: function(player){
             game.checkForTie(game.board);
             game.handleWinnerLogic(player, game.board);
+
         },
         checkForTie: function(arr){
             if(arr.every(x => (x === "X") || (x === "O"))){
-                game.error.textContent = "tie game!"
+                game.error.innerText = "tie game!"
                 return game.gameOver = true;
             }
         },
         handleWinnerLogic: function(player, board){
             function displayResults(){
-                game.error.textContent = `player ${player} won`;
-                return game.gameOver =true;
+                game.error.innerText = `player ${player} won`;
+                game.turnDisplay.innerText = `Turn: game over`;
+                return game.gameOver = true;
             }
             if(board[0] === player && board[1] === player && board[2] === player){
                 return displayResults();
@@ -103,11 +110,22 @@
         },
         restartOnClick: function(){
             game.restartbtn.addEventListener("click", function(e){
-                game.board = ["","","","","","","","",""];
-                console.log(e)
-                // game.init();
+                game.handleRestartLogic();
+                return game.lastPlayer = "O";
             })
-        }
+        },
+        handleRestartLogic: function(){
+            // game.gameOver = true;
+            game.board = [];
+            const playtiles = document.querySelectorAll(".tile");
+            game.board = Array.from(playtiles);
+            playtiles.forEach(element => element.innerText = "");
+            game.error.innerText = "";
+            game.turnDisplay.innerText = "Turn: player X";
+            game.gameOver = false;
+            game.lastPlayer = "O";
+            console.log(game.lastPlayer)
+        },
     }
     game.init();
 })();
