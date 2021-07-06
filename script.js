@@ -23,7 +23,7 @@
                 numOfGrids++;
             };
         },
-        renderLogic: function(e, player){
+        handleRenderLogic: function(e, player){
             if(e.target.className.includes("tile")){
                 e.target.innerHTML = player;
                 game.error.textContent = "";
@@ -41,7 +41,7 @@
                     game.error.textContent = "This tile has already been picked.";
                     return game.playerTurn();
                 }
-                game.renderLogic(myEvent, player);
+                game.handleRenderLogic(myEvent, player);
             }, { once : true })
         },
         player1: function(){
@@ -66,7 +66,9 @@
         },
         checkForWinner: function(player){
             game.checkForTie(game.board);
-            const board = game.board;
+            game.handleWinnerLogic(player, game.board);
+        },
+        handleWinnerLogic: function(player, board){
             function displayResults(){
                 game.error.textContent = `player ${player} won`;
                 return game.gameOver =true;
