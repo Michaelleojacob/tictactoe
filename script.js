@@ -23,21 +23,25 @@
                 numOfGrids++;
             };
         },
+        renderLogic: function(e, player){
+            if(e.target.className.includes("tile")){
+                e.target.innerHTML = player;
+                game.error.textContent = "";
+                game.board[game.board.indexOf(e.target)] = player;
+                game.lastPlayer = player;
+                game.checkForWinner(player);
+                return game.playerTurn();
+            }
+        },
         renderPlayerMarkerOnClick: function(player){
             this.el.addEventListener("click", function(e){
+                const myEvent = e;
                 if(game.gameOver === true) return;
                 if(e.target.innerHTML !== ""){
                     game.error.textContent = "This tile has already been picked.";
                     return game.playerTurn();
                 }
-                if(e.target.className.includes("tile")){
-                    e.target.innerHTML = player;
-                    game.error.textContent = "";
-                    game.board[game.board.indexOf(e.target)] = player;
-                    game.lastPlayer = player;
-                    game.checkForWinner(player);
-                    return game.playerTurn();
-                }
+                game.renderLogic(myEvent, player);
             }, { once : true })
         },
         player1: function(){
@@ -54,10 +58,17 @@
                 game.player2();
             }
         },
+        checkForTie: function(arr){
+            if(arr.every(x => (x === "X") || (x === "O"))){
+                game.error.textContent = "tie game!"
+                return game.gameOver = true;
+            }
+        },
         checkForWinner: function(player){
-            const board = this.board;
+            game.checkForTie(game.board);
+            const board = game.board;
             function displayResults(){
-                game.error.textContent = `${player} won`;
+                game.error.textContent = `player ${player} won`;
                 return game.gameOver =true;
             }
             if(board[0] === player && board[1] === player && board[2] === player){
@@ -83,10 +94,6 @@
             }
             if(board[2] === player && board[4] === player && board[6] === player){
                 return displayResults();
-            }
-            if(board.forEach(element => element === "X" || "O")){
-                error.textContent = `tie game`;
-                return gameOver = true;
             }
         }
     }
