@@ -32,7 +32,7 @@
                 e.target.innerText = player;
                 game.error.innerText = "";
                 game.board[game.board.indexOf(e.target)] = player;
-                game.lastPlayer = player;
+                game.lastPlayer === "O" ? game.lastPlayer = "W" : game.lastPlayer = "A";
                 game.lastPlayer === "O" ? game.turnDisplay.innerText = "Turn: player X" : game.turnDisplay.innerText = "Turn: player O"  
                 game.checkForWinner(player);
                 return game.playerTurn();

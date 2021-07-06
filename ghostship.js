@@ -7,15 +7,15 @@
         init: function(){
             this.cacheDom();
             this.displayGrid();
-            this.playerTurn();
-            this.restartOnClick();
+            this.singleEventListener();
         },
         cacheDom: function(){
-            this.el = document.querySelector("#gameboard");
-            this.container = document.querySelector("#gameboard");
-            this.error = document.querySelector(".displayError");
-            this.restartbtn = document.querySelector(".restart");
-            this.turnDisplay = document.querySelector(".turn");
+            this.wrapper = document.querySelector(".wrapper");
+            this.el = this.wrapper.querySelector("#gameboard");
+            this.container = this.wrapper.querySelector("#gameboard");
+            this.error = this.wrapper.querySelector(".displayError");
+            this.restartbtn = this.wrapper.querySelector(".restart");
+            this.turnDisplay = this.wrapper.querySelector(".turn");
         },
         displayGrid: function(){
             let numOfGrids = 0;
@@ -27,55 +27,17 @@
                 numOfGrids++;
             };
         },
-        handleRenderLogic: function(e, player){
-            if(e.target.className.includes("tile")){
-                e.target.innerText = player;
-                game.error.innerText = "";
-                game.board[game.board.indexOf(e.target)] = player;
-                game.lastPlayer = player;
-                game.lastPlayer === "O" ? game.turnDisplay.innerText = "Turn: player X" : game.turnDisplay.innerText = "Turn: player O"  
-                game.checkForWinner(player);
-                return game.playerTurn();
-            }
-        },
-        renderPlayerMarkerOnClick: function(player){
-            this.el.addEventListener("click", function(e){
-                const myEvent = e;
-                console.log(game.lastPlayer)
-                if(game.gameOver === true) return;
-                if(e.target.innerText !== ""){
-                    game.error.innerText = "This tile has already been picked.";
-                    return game.playerTurn();
-                }
-                game.handleRenderLogic(myEvent, player);
-            }, { once : true })
-        },
-        player1: function(){
-            game.renderPlayerMarkerOnClick("X");
-        },
-        player2: function(){
-            game.renderPlayerMarkerOnClick("O");
-        },
-        playerTurn: function(){
-            console.log(game.lastPlayer)
-            if(game.gameOver === true) return;
-            if(game.lastPlayer === "O"){
-                game.player1();
-            }
-            else{
-                game.player2();
+        checkForTie: function(arr){
+            console.log(arr);
+            if(arr.every(x => (x === "X") || (x === "O"))){
+                game.error.innerText = "tie game!"
+                return game.gameOver = true;
             }
         },
         checkForWinner: function(player){
             game.checkForTie(game.board);
             game.handleWinnerLogic(player, game.board);
 
-        },
-        checkForTie: function(arr){
-            if(arr.every(x => (x === "X") || (x === "O"))){
-                game.error.innerText = "tie game!"
-                return game.gameOver = true;
-            }
         },
         handleWinnerLogic: function(player, board){
             function displayResults(){
@@ -108,14 +70,7 @@
                 return displayResults();
             }
         },
-        restartOnClick: function(){
-            game.restartbtn.addEventListener("click", function(e){
-                game.handleRestartLogic();
-                return game.lastPlayer = "O";
-            })
-        },
         handleRestartLogic: function(){
-            // game.gameOver = true;
             game.board = [];
             const playtiles = document.querySelectorAll(".tile");
             game.board = Array.from(playtiles);
@@ -124,7 +79,39 @@
             game.turnDisplay.innerText = "Turn: player X";
             game.gameOver = false;
             game.lastPlayer = "O";
-            console.log(game.lastPlayer)
+        },
+        singleEventListener: function(){
+            game.wrapper.addEventListener("click", function(e){
+                const event = e;
+                if(e.target.className.includes("restart")){
+                    game.handleRestartLogic();
+                }
+                if(game.gameOver === true)return;
+                if(e.target.className.includes("tile")){
+                    if(e.target.innerText !== ""){
+                        game.error.innerText = "that tile is already taken"
+                        return;
+                    };
+                    game.renderPlayerMarkerOnClick(event);
+                    game.error.innerText = "";
+                    game.checkForWinner("X");
+                    game.checkForWinner("O");
+                }
+            })
+        },
+        renderPlayerMarkerOnClick: function(e){
+            if(game.lastPlayer === "O"){
+                e.target.innerText = "X";
+                game.board[game.board.indexOf(e.target)] = "X";
+                game.turnDisplay.innerText = "Turn: player O"
+                return game.lastPlayer = "X";
+            }
+            if(game.lastPlayer === "X"){
+                e.target.innerText = "O";
+                game.board[game.board.indexOf(e.target)] = "O";
+                game.turnDisplay.innerText = "Turn: player X"
+                return game.lastPlayer = "O";
+            }
         },
     }
     game.init();
