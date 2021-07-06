@@ -15,6 +15,7 @@
             this.container = document.querySelector("#gameboard");
             this.error = document.querySelector(".displayError");
             this.restartbtn = document.querySelector(".restart");
+            this.turnDisplay = document.querySelector(".turn");
         },
         displayGrid: function(){
             let numOfGrids = 0;
@@ -32,6 +33,7 @@
                 game.error.textContent = "";
                 game.board[game.board.indexOf(e.target)] = player;
                 game.lastPlayer = player;
+                game.lastPlayer === "O" ? game.turnDisplay.textContent = "Turn: player X" : game.turnDisplay.textContent = "Turn: player O"  
                 game.checkForWinner(player);
                 return game.playerTurn();
             }
@@ -54,6 +56,7 @@
             game.renderPlayerMarkerOnClick("O");
         },
         playerTurn: function(){
+            if(game.gameOver === true) return;
             if(game.lastPlayer === "O"){
                 game.player1();
             }
@@ -64,6 +67,7 @@
         checkForWinner: function(player){
             game.checkForTie(game.board);
             game.handleWinnerLogic(player, game.board);
+
         },
         checkForTie: function(arr){
             if(arr.every(x => (x === "X") || (x === "O"))){
@@ -74,7 +78,8 @@
         handleWinnerLogic: function(player, board){
             function displayResults(){
                 game.error.textContent = `player ${player} won`;
-                return game.gameOver =true;
+                game.turnDisplay.textContent = `Turn: game over`;
+                return game.gameOver = true;
             }
             if(board[0] === player && board[1] === player && board[2] === player){
                 return displayResults();
@@ -103,22 +108,20 @@
         },
         restartOnClick: function(){
             game.restartbtn.addEventListener("click", function(e){
-                const event = e;
-                game.handleRestartLogic(event);
+                game.handleRestartLogic();
             })
         },
-        handleRestartLogic: function(e){
-            //clear and remake array list
+        handleRestartLogic: function(){
+            game.gameOver = true;
             game.board = [];
-            const nineGrids = document.querySelectorAll(".tile");
-            game.board = Array.from(nineGrids);
-            //remove innerText from each tile.
-            nineGrids.forEach(element => element.innerText = "");
+            const playtiles = document.querySelectorAll(".tile");
+            game.board = Array.from(playtiles);
+            playtiles.forEach(element => element.innerText = "");
             game.lastPlayer = "O";
-            //remove error text
             game.error.innerText = "";
-            //handle if game is over
+            game.turnDisplay.innerText = "Turn: player X";
             game.gameOver = false;
+            return game.playerTurn();
         },
     }
     game.init();
