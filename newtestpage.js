@@ -4,16 +4,6 @@ const board = [];
 let lastPlayer = "O";
 let markedTileCounter = 0;
 let gameOver = false;
-// const winningCombinations = [
-//     [0,1,2],
-//     [3,4,5],
-//     [6,7,8],
-//     [0,3,6],
-//     [1,4,7],
-//     [2,5,8],
-//     [0,4,8],
-//     [2,4,6],
-// ];
 
 function makeGrid(){
     let numOfGrids = 0;
@@ -28,10 +18,6 @@ function makeGrid(){
 makeGrid();
 
 function checkForWinner(player){
-    // if there is a winner
-    // change gameOver to true
-
-    //logic to check if there is a winner
     if(board[0] === player && board[1] === player && board[2] === player){
         console.log("condition 0 ran");
         return gameOver = true;
