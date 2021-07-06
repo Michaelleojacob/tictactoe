@@ -11,6 +11,7 @@
         },
         cacheDom: function(){
             this.el = document.querySelector("#gameboard");
+            this.container = document.querySelector("#gameboard");
             this.error = document.querySelector(".displayError");
         },
         displayGrid: function(){
@@ -58,15 +59,15 @@
                 game.player2();
             }
         },
+        checkForWinner: function(player){
+            game.checkForTie(game.board);
+            game.handleWinnerLogic(player, game.board);
+        },
         checkForTie: function(arr){
             if(arr.every(x => (x === "X") || (x === "O"))){
                 game.error.textContent = "tie game!"
                 return game.gameOver = true;
             }
-        },
-        checkForWinner: function(player){
-            game.checkForTie(game.board);
-            game.handleWinnerLogic(player, game.board);
         },
         handleWinnerLogic: function(player, board){
             function displayResults(){
@@ -97,7 +98,8 @@
             if(board[2] === player && board[4] === player && board[6] === player){
                 return displayResults();
             }
-        }
+        },
+        
     }
     game.init();
 })();
