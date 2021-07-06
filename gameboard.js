@@ -1,7 +1,9 @@
 const el = document.querySelector("#gameboard");
 const error = document.querySelector(".displayError");
 const board = [];
-let lastPlayer = "O"
+let lastPlayer = "O";
+let markedTileCounter = 0;
+let gameOver = false;
 
 function makeGrid(){
     let numOfGrids = 0;
@@ -15,22 +17,8 @@ function makeGrid(){
 }
 makeGrid();
 
-// function renderPlayerMarkerOnClick(player){
-//     el.addEventListener("click", function(e){
-//         if(e.target.innerHTML !== ""){
-//             error.textContent = "This tile has already been picked.";
-//             return;
-//         }
-//         if(e.target.className.includes("tile")){
-//             e.target.innerHTML = player;
-//             error.textContent = "";
-//         }
-//     })
-// }
-
 function renderPlayerMarkerOnClick(player){
     el.addEventListener("click", function(e){
-        console.log(lastPlayer);
         if(e.target.innerHTML !== ""){
             error.textContent = "This tile has already been picked.";
             return;
@@ -38,32 +26,35 @@ function renderPlayerMarkerOnClick(player){
         if(e.target.className.includes("tile")){
             e.target.innerHTML = player;
             error.textContent = "";
+            testing();
         }
     }, {once : true});
 }
-// renderPlayerMarkerOnClick();
+
+function testing (){
+    if(lastPlayer === "O"){
+        player1();
+        // renderPlayerMarkerOnClick("X");
+        // lastPlayer = "X";
+    }
+    else{
+        player2();
+        // renderPlayerMarkerOnClick("O");
+        // lastPlayer = "O";
+    }
+}
+testing();
+
 
 function player1(){
     renderPlayerMarkerOnClick("X");
     lastPlayer = "X";
+    markedTileCounter++;
 }
 
 function player2(){
     renderPlayerMarkerOnClick("O");
     lastPlayer = "O";
+    markedTileCounter++;
 }
 
-function decideTurn(turn){
-    let i=0;
-    while(i<9){
-        if(turn === "O"){
-            renderPlayerMarkerOnClick("X")
-            i++;
-        }
-        else{
-            renderPlayerMarkerOnClick("O")
-            i++;
-        }
-    }
-}
-decideTurn(lastPlayer);
