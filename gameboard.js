@@ -4,6 +4,16 @@ const board = [];
 let lastPlayer = "O";
 let markedTileCounter = 0;
 let gameOver = false;
+const winningCombinations = [
+    [0,1,2],
+    [3,4,5],
+    [6,7,8],
+    [0,3,6],
+    [1,4,7],
+    [2,5,8],
+    [0,4,8],
+    [2,4,6],
+];
 
 function makeGrid(){
     let numOfGrids = 0;
@@ -21,6 +31,7 @@ function renderPlayerMarkerOnClick(player){
     el.addEventListener("click", function(e){
         if(e.target.innerHTML !== ""){
             error.textContent = "This tile has already been picked.";
+            testing();
             return;
         }
         if(e.target.className.includes("tile")){
@@ -34,11 +45,13 @@ function renderPlayerMarkerOnClick(player){
 function testing (){
     if(lastPlayer === "O"){
         player1();
+        console.log(board);
         // renderPlayerMarkerOnClick("X");
         // lastPlayer = "X";
     }
     else{
         player2();
+        console.log(board)
         // renderPlayerMarkerOnClick("O");
         // lastPlayer = "O";
     }
@@ -58,3 +71,10 @@ function player2(){
     markedTileCounter++;
 }
 
+function checkForWinner(player){
+    // if there is a winner
+    // change gameOver to true
+
+    //logic to check if there is a winner
+
+}
