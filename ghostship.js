@@ -103,11 +103,23 @@
         },
         restartOnClick: function(){
             game.restartbtn.addEventListener("click", function(e){
-                game.board = ["","","","","","","","",""];
-                console.log(e)
-                // game.init();
+                const event = e;
+                game.handleRestartLogic(event);
             })
-        }
+        },
+        handleRestartLogic: function(e){
+            //clear and remake array list
+            game.board = [];
+            const nineGrids = document.querySelectorAll(".tile");
+            game.board = Array.from(nineGrids);
+            //remove innerText from each tile.
+            nineGrids.forEach(element => element.innerText = "");
+            game.lastPlayer = "O";
+            //remove error text
+            game.error.innerText = "";
+            //handle if game is over
+            game.gameOver = false;
+        },
     }
     game.init();
 })();
