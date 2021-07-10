@@ -133,9 +133,14 @@
             }
         },
         playerVsRandoRandy: function(e){
+            const arr = [0,1,2,3,4,5,6,7,8];
             if(game.lastPlayer === "O"){
+                function getIndex(target, marker){
+                    return game.board[game.board.indexOf(target)] = marker;
+                }
+                console.log(game.board.indexOf(e.target));
                 e.target.innerText = "X";
-                game.board[game.board.indexOf(e.target)] = "X";
+                getIndex(e.target, "X");
                 game.turnDisplay.innerText = "Turn: player O"
                 game.lastPlayer = "X";
 
@@ -143,6 +148,8 @@
                     return Math.floor(Math.random() * max);
                 }
                 console.log(getRandomInt(9));
+                game.lastPlayer = "O"
+
             }
         }
     }
