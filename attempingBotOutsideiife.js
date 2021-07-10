@@ -45,3 +45,10 @@ board.addEventListener("click", function(e){
         }
     }
 })
+
+// function logic(event){
+//     console.log(event);
+//     board.removeEventListener("click", logic)
+// }
+
+// board.addEventListener("click", logic)
