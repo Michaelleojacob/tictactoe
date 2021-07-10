@@ -1,14 +1,18 @@
 (function(){
     "use strict";
     const game = {
-        board: [],
+        board: [0,1,2,3,4,5,6,7,8],
+        botarr: [0,1,2,3,4,5,6,7,8],
         lastPlayer: "O",
         playerOrBot: "player",
         gameOver: false,
+        p1: "X",
+        p2: "O",
         init: function(){
             this.cacheDom();
             this.displayGrid();
-            this.singleEventListener();
+            this.tileClickEvent();
+            this.resetBtn();
             this.getDropDownValue();
         },
         cacheDom: function(){
@@ -21,8 +25,8 @@
             this.selectValue = this.wrapper.querySelector(".playerOrBot");
         },
         getDropDownValue:function(){
-            let playerOrBot = this.selectValue.value;
-            game.wrapper.addEventListener("change", function(e){
+            let playerOrBot = game.selectValue.value;
+            game.selectValue.addEventListener("change", function(e){
                 playerOrBot = e.target.value;
                 game.handleRestartLogic();
                 return playerOrBot;
@@ -30,14 +34,11 @@
             return playerOrBot;
         },
         displayGrid: function(){
-            let numOfGrids = 0;
-            while(numOfGrids < 9){
-                const nineGrids = document.createElement("div");
-                nineGrids.classList.add("tile", numOfGrids);
-                this.el.appendChild(nineGrids);
-                this.board.push(nineGrids)
-                numOfGrids++;
-            };
+            for(let item of game.board){
+                let tile = document.createElement('div');
+                tile.classList.add("tile", item);
+                game.container.appendChild(tile);
+            }
         },
         checkForTie: function(arr){
             if(arr.every(x => (x === "X") || (x === "O"))){
@@ -81,6 +82,9 @@
                 return displayResults();
             }
         },
+        resetBtn: function(e){
+            game.restartbtn.addEventListener("click", game.handleRestartLogic());
+        },
         handleRestartLogic: function(){
             game.board = [];
             const playtiles = document.querySelectorAll(".tile");
@@ -91,65 +95,39 @@
             game.gameOver = false;
             game.lastPlayer = "O";
         },
-        singleEventListener: function(){
-            game.wrapper.addEventListener("click", function(e){
+        tileClickEvent: function(){
+            game.container.addEventListener("click", function(e){
+                if(game.gameOver === true)return;
                 const playerOrBot = game.selectValue.value;
                 const event = e;
-                if(e.target.className.includes("restart")){
-                    game.handleRestartLogic();
-                }
-                if(game.gameOver === true)return;
                 if(e.target.className.includes("tile")){
                     if(e.target.innerText !== ""){
                         game.error.innerText = "that tile is already taken"
                         return;
                     };
                     if(playerOrBot === "player"){
-                        console.log(`${game.playerOrBot} should be player`)
                         game.playerVsPlayer(event);
                     }
                     else if(playerOrBot === "randoRandy"){
-                        console.log(`${game.playerOrBot} should be rando`)
                         game.playerVsRandoRandy(event);
                     }
                     game.error.innerText = "";
-                    game.checkForWinner("X");
-                    game.checkForWinner("O");
                 }
-            })
+            }, {once: true})
+        },
+        playerLogic: function(e, player){
         },
         playerVsPlayer: function(e){
-            if(game.lastPlayer === "O"){
-                e.target.innerText = "X";
-                game.board[game.board.indexOf(e.target)] = "X";
-                game.turnDisplay.innerText = "Turn: player O"
-                return game.lastPlayer = "X";
-            }
-            if(game.lastPlayer === "X"){
-                e.target.innerText = "O";
-                game.board[game.board.indexOf(e.target)] = "O";
-                game.turnDisplay.innerText = "Turn: player X"
-                return game.lastPlayer = "O";
-            }
         },
         playerVsRandoRandy: function(e){
-            const arr = [0,1,2,3,4,5,6,7,8];
             if(game.lastPlayer === "O"){
                 function getIndex(target, marker){
                     return game.board[game.board.indexOf(target)] = marker;
                 }
-                console.log(game.board.indexOf(e.target));
                 e.target.innerText = "X";
                 getIndex(e.target, "X");
                 game.turnDisplay.innerText = "Turn: player O"
                 game.lastPlayer = "X";
-
-                function getRandomInt(max){
-                    return Math.floor(Math.random() * max);
-                }
-                console.log(getRandomInt(9));
-                game.lastPlayer = "O"
-
             }
         }
     }
