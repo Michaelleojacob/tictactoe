@@ -8,31 +8,32 @@ for(el in arr){
     board.appendChild(tile);
 }
 
-board.addEventListener("click", function(e){
-    if(e.target.className.includes("tile")){
-        if(e.target.innerText !== "") return;
-        let currTarget = e.target.classList[1];
-        console.log(e.target.classList[1])
+function playerLogic(e){
+    let currTarget = e.target.classList[1];
         currTarget = parseInt(currTarget);
         arr[arr.indexOf(currTarget)] = "X";
         delete botarr[botarr.indexOf(currTarget)];
-        // botarr = botarr.filter(item => item);
         botarr = botarr.filter(Number.isFinite);
         e.target.innerText = "X";
+}
 
-        // console.log(arr);
-        // console.log(botarr);
+board.addEventListener("click", function(e){
+    let myEvent = e; 
+    if(e.target.className.includes("tile")){
+        playerLogic(myEvent);
+
 
         function getRandomInt(max){
-            return Math.floor(Math.random() * max);
+            if(max <= 1)return;
+            const randomNumIndex = Math.floor(Math.random() * max);
+            let botSelect = botarr[randomNumIndex];
+            botSelect = parseInt(botSelect);
+            return botSelect;
         }
         let randomNumFromBotarr = getRandomInt(botarr.length);
-        console.log(randomNumFromBotarr);
         let boxes = document.querySelectorAll(".tile");
         let boxArr = Array.from(boxes);
-        // console.log(boxArr[0].classList[1]);
         for(let i=0; i<boxArr.length; i++){
-            // console.log(boxArr[i].classList[1])
             if(boxArr[i].classList[1].includes(randomNumFromBotarr)){
                 boxArr[i].innerText = "O";
                 delete botarr[botarr.indexOf(randomNumFromBotarr)];
