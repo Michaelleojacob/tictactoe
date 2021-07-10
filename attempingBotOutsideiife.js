@@ -17,28 +17,29 @@ function playerLogic(e){
         e.target.innerText = "X";
 }
 
+function getRandomInt(max){
+    if (max<=1)return;
+    const randomNumIndex = Math.floor(Math.random() * max);
+    let botSelect = botarr[randomNumIndex];
+    botSelect = parseInt(botSelect);
+    return botSelect;
+}
+
 board.addEventListener("click", function(e){
     let myEvent = e; 
     if(e.target.className.includes("tile")){
         playerLogic(myEvent);
+        let botSelect = getRandomInt(botarr.length);
 
-
-        function getRandomInt(max){
-            if(max <= 1)return;
-            const randomNumIndex = Math.floor(Math.random() * max);
-            let botSelect = botarr[randomNumIndex];
-            botSelect = parseInt(botSelect);
-            return botSelect;
-        }
-        let randomNumFromBotarr = getRandomInt(botarr.length);
-        let boxes = document.querySelectorAll(".tile");
+        let boxes = board.querySelectorAll(".tile");
         let boxArr = Array.from(boxes);
+
         for(let i=0; i<boxArr.length; i++){
-            if(boxArr[i].classList[1].includes(randomNumFromBotarr)){
+            if(boxArr[i].classList[1].includes(botSelect)){
                 boxArr[i].innerText = "O";
-                delete botarr[botarr.indexOf(randomNumFromBotarr)];
+                delete botarr[botarr.indexOf(botSelect)];
                 botarr = botarr.filter(Number.isFinite);
-                arr[arr.indexOf(randomNumFromBotarr)] = "O";
+                arr[arr.indexOf(botSelect)] = "O";
             }
         }
     }
