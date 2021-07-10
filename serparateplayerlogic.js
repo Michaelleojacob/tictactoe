@@ -130,11 +130,6 @@
             })
         },
         playerVsPlayer: function(){
-            //this will start how two players vs each other.
-            console.log("pvp logic ran")
-            //what if we did game.lastPlayer  = checkTurn()
-            //player = checkTurn(game.Lastplayer())
-            //game.playerTurn(player);
             game.playerTurn();
 
         },
