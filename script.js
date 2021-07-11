@@ -4,14 +4,12 @@
         board: [0,1,2,3,4,5,6,7,8],
         botarr: [0,1,2,3,4,5,6,7,8],
         lastPlayer: "O",
-        playerOrBot: "player",
+        opponent: "player",
         gameOver: false,
-        p1: "X",
-        p2: "O",
         init: function(){
             this.cacheDom();
             this.displayGrid();
-            this.singleEventListener();
+            this.resetBtn();
             this.getDropDownValue();
         },
         cacheDom: function(){
@@ -24,13 +22,15 @@
             this.selectValue = this.wrapper.querySelector(".playerOrBot");
         },
         getDropDownValue:function(){
-            let playerOrBot = game.selectValue.value;
+            let opponent = game.selectValue.value;
             game.selectValue.addEventListener("change", function(e){
-                playerOrBot = e.target.value;
+                game.container.removeEventListener("click", game.plogic);
+                game.container.removeEventListener("click", game.randoLogic);
+                opponent = e.target.value;
                 game.handleRestartLogic();
-                return playerOrBot;
+                return game.gameinit(opponent);
             });
-            return playerOrBot;
+            return game.gameinit(opponent);
         },
         displayGrid: function(){
             for(let item of game.board){
@@ -45,7 +45,7 @@
                 return game.gameOver = true;
             }
         },
-        checkForWinner: function(player){
+        checkForGameState: function(player){
             game.checkForTie(game.board);
             game.handleWinnerLogic(player, game.board);
 
@@ -81,69 +81,95 @@
                 return displayResults();
             }
         },
+        resetBtn: function(e){
+            game.restartbtn.addEventListener("click", game.handleRestartLogic);
+        },
         handleRestartLogic: function(){
-            game.board = [];
-            const playtiles = document.querySelectorAll(".tile");
-            game.board = Array.from(playtiles);
-            playtiles.forEach(element => element.innerText = "");
+            let boxes = game.container.querySelectorAll(".tile");
+            let boxArr = Array.from(boxes);
+            for(let box of boxArr) box.innerText = "";
             game.error.innerText = "";
             game.turnDisplay.innerText = "Turn: player X";
             game.gameOver = false;
             game.lastPlayer = "O";
+            game.botarr = [0,1,2,3,4,5,6,7,8];
+            game.board = [0,1,2,3,4,5,6,7,8];
         },
-        singleEventListener: function(){
-            game.wrapper.addEventListener("click", function(e){
-                const playerOrBot = game.selectValue.value;
-                const event = e;
-                if(e.target.className.includes("restart")){
-                    game.handleRestartLogic();
-                }
+        gameinit: function(opponent){
+            //if gameover = true => end game; also inits game and who opponent is.
+            if(game.gameOver === true)return;
+            if(opponent === "player"){
+                game.playerVsPlayer();
+            }
+            if(opponent === "randoRandy"){
+                game.playerVsRandoRandy();
+            }
+        },
+        playerVsPlayer: function(){
+            game.playerTurn();
+        },
+        plogic: function(event){
+            if(game.gameOver === true)return;
+            if(event.target.className.includes("tile")){
+                let myEvent = event;
+                let player = game.checkTurn(game.lastPlayer);
+                game.lastPlayer = player;
+                game.playerLogic(myEvent, player);
+                game.checkForGameState(player, game.board);
+            }
+        },
+        playerTurn: function(){
+            game.container.addEventListener("click", game.plogic);
+        },
+        checkTurn: function(turn){
+            let player = "";
+            if(turn === "O") return player = "X";
+            else return player = "O";
+        },
+        playerLogic: function(e, p){
+            let playerTarget = e.target.classList[1];
+            playerTarget = parseInt(playerTarget);
+            game.board[playerTarget] = p;
+            e.target.innerText = p;
+            delete game.botarr[game.botarr.indexOf(playerTarget)];
+            game.botarr = game.botarr.filter(Number.isFinite);
+            return game.lastPlayer = p
+        },
+        getRandomInt: function(max){
+            if(max<=1)return;
+            const randomNumIndex = Math.floor(Math.random() * max);
+            let botSelect = game.botarr[randomNumIndex];
+            botSelect = parseInt(botSelect);
+            return botSelect;
+        },
+        randoLogic: function(event){
+            if(event.target.className.includes("tile")){
                 if(game.gameOver === true)return;
-                if(e.target.className.includes("tile")){
-                    if(e.target.innerText !== ""){
-                        game.error.innerText = "that tile is already taken"
-                        return;
-                    };
-                    if(playerOrBot === "player"){
-                        console.log(`${game.playerOrBot} should be player`)
-                        game.playerVsPlayer(event);
-                    }
-                    else if(playerOrBot === "randoRandy"){
-                        console.log(`${game.playerOrBot} should be rando`)
-                        game.playerVsRandoRandy(event);
-                    }
-                    game.error.innerText = "";
-                    game.checkForWinner(game.p1);
-                    game.checkForWinner(game.p2);
+                if(event.target.innerText !== "")return;
+                const myEvent = event;
+                game.playerLogic(myEvent, "X");
+                game.checkForGameState("X", game.board);
+                if(game.gameOver === true)return;
+                let botSelect = game.getRandomInt(game.botarr.length);
+                let boxes = game.container.querySelectorAll(".tile");
+                let boxArr = Array.from(boxes);
+                for(let i=0; i<boxArr.length; i++){
+                    setTimeout(() => {
+                        if(boxArr[i].classList[1].includes(botSelect)){
+                            boxArr[i].innerText = "O";
+                            delete game.botarr[game.botarr.indexOf(botSelect)];
+                            game.botarr = game.botarr.filter(Number.isFinite);
+                            game.board[game.board.indexOf(botSelect)] = "O";
+                        }    
+                    }, 150);
+                    
                 }
-            })
-        },
-        playerVsPlayer: function(e){
-            if(game.lastPlayer === "O"){
-                e.target.innerText = "X";
-                game.board[game.board.indexOf(e.target)] = "X";
-                game.turnDisplay.innerText = "Turn: player O"
-                return game.lastPlayer = "X";
-            }
-            if(game.lastPlayer === "X"){
-                e.target.innerText = "O";
-                game.board[game.board.indexOf(e.target)] = "O";
-                game.turnDisplay.innerText = "Turn: player X"
-                return game.lastPlayer = "O";
+                game.checkForGameState("O", game.board);
             }
         },
-        playerVsRandoRandy: function(e){
-            if(game.lastPlayer === "O"){
-                function getIndex(target, marker){
-                    return game.board[game.board.indexOf(target)] = marker;
-                }
-                console.log(game.board.indexOf(e.target));
-                e.target.innerText = "X";
-                getIndex(e.target, "X");
-                game.turnDisplay.innerText = "Turn: player O"
-                game.lastPlayer = "X";
-            }
-        }
+        playerVsRandoRandy: function(){
+            game.container.addEventListener("click", game.randoLogic);
+        },
     }
     game.init();
 })();
