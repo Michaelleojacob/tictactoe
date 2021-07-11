@@ -1,4 +1,4 @@
-# tictactoe by Michael Jacob<br><a href="https://github.com/Michaelleojacob/tictactoey" target="_blank">Repository</a> <br><a href="https://michaelleojacob.github.io/tictactoe/" target="_blank">Live application</a>
+# tictactoe by Michael Jacob<br><a href="https://github.com/Michaelleojacob/tictactoe" target="_blank">Repository</a> <br><a href="https://michaelleojacob.github.io/tictactoe/" target="_blank">Live application</a>
 
 # How to use:<br>click the >Live application< link above, to open a new page. Once you are on the page, you may click to add an "X" marker to the page. If you click again an "O" should be placed. This pattern will repeat until there is a winner, or a tie. Then you may restart the game to play again.
 

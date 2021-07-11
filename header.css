@@ -5,12 +5,14 @@
 	font-size: 22px;
 	flex-direction: column;
 	margin: 1vh;
+	opacity: 80%;
 }
 .email {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	margin: 1vh;
+	font-size: 24px;
 }
 
 a {
@@ -22,13 +24,13 @@ a:hover {
 }
 
 .githubatag {
-	margin: 0px 1.1vh 0px 1.1vh;
+	margin: 0px 1vh 0px 1vh;
 }
 
 .linkedinatag {
-	margin: 0px 1.1vh 0px 1.1vh;
+	margin: 0px 1vh 0px 1vh;
 }
 
 .repoatag {
-	margin: 0px 1.1vh 0px 1.1vh;
+	margin: 0px 1vh 0px 1vh;
 }

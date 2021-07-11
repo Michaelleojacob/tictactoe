@@ -59,7 +59,7 @@
         handleWinnerLogic: function(player, board){
             function displayResults(){
                 game.error.innerText = `player ${player} won`;
-                game.turnDisplay.innerText = `Turn: game over`;
+                game.turnDisplay.innerText = `turn: game over`;
                 player === "X" ? game.playerScore++ : game.opponentScore++ ;
                 game.pScore.innerText = `X: ${game.playerScore}`;
                 game.oppScore.innerText = `O: ${game.opponentScore}`;
@@ -98,7 +98,7 @@
             let boxArr = Array.from(boxes);
             for(let box of boxArr) box.innerText = "";
             game.error.innerText = "";
-            game.turnDisplay.innerText = "Turn: player X";
+            game.turnDisplay.innerText = "turn: player X";
             game.gameOver = false;
             game.lastPlayer = "O";
             game.botarr = [0,1,2,3,4,5,6,7,8];
@@ -148,7 +148,7 @@
             delete game.botarr[game.botarr.indexOf(playerTarget)];
             game.botarr = game.botarr.filter(Number.isFinite);
             game.lastPlayer = p
-            p === "X" ? game.turnDisplay.innerText = `Turn: player O` : game.turnDisplay.innerText = `Turn: player X`;
+            p === "X" ? game.turnDisplay.innerText = `turn: player O` : game.turnDisplay.innerText = `turn: player X`;
         },
         getRandomInt: function(max){
             if(max<=1)return;
@@ -175,7 +175,7 @@
                         game.botarr = game.botarr.filter(Number.isFinite);
                         game.board[game.board.indexOf(botSelect)] = "O";
                         game.checkForGameState("O", game.board);
-                        game.turnDisplay.innerText = `Turn: player X`;
+                        game.turnDisplay.innerText = `turn: player X`;
                     }    
                 }, 150);
                 
