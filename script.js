@@ -32,7 +32,6 @@
                 game.container.removeEventListener("click", game.randoLogic);
                 game.playerScore = 0;
                 game.opponentScore = 0;
-                //don't forget to add for thug -- when implemented.
                 opponent = e.target.value;
                 game.handleRestartLogic();
                 return game.gameinit(opponent);
@@ -116,27 +115,30 @@
                 game.playerVsRandoRandy();
             }
         },
+        legalMoveCheck: function(event){
+            if(game.gameOver === true)return false;
+            if(!event.target.className.includes("tile"))return false;
+            if(event.target.innerText !==""){
+                game.error.innerText = `that tile has already been selected`
+                return false; 
+            }
+            else return true;
+        },
         playerVsPlayer: function(){
-            game.playerTurn();
+            game.container.addEventListener("click", game.plogic);
         },
         plogic: function(event){
-            if(game.gameOver === true)return;
-            if(event.target.innerText !=="")return game.error.innerText = `that tile has already been selected`;
-            if(event.target.className.includes("tile")){
-                let myEvent = event;
-                let player = game.checkTurn(game.lastPlayer);
-                game.lastPlayer = player;
-                game.playerLogic(myEvent, player);
-                game.checkForGameState(player, game.board);
-            }
-        },
-        playerTurn: function(){
-            game.container.addEventListener("click", game.plogic);
+            let isLegalMove =  game.legalMoveCheck(event);
+            if(isLegalMove === false) return;
+            let player = game.checkTurn(game.lastPlayer);
+            game.lastPlayer = player;
+            game.playerLogic(event, player);
+            game.checkForGameState(player, game.board);
         },
         checkTurn: function(turn){
             let player = "";
-            if(turn === "O") return player = "X";
-            else return player = "O";
+            turn === "O" ?  player = "X" :  player = "O";
+            return player;
         },
         playerLogic: function(e, p){
             let playerTarget = e.target.classList[1];
@@ -156,29 +158,27 @@
             return botSelect;
         },
         randoLogic: function(event){
-            if(event.target.className.includes("tile")){
-                if(game.gameOver === true)return;
-                if(event.target.innerText !== "")return game.error.innerText = `that tile has already been selected`;
-                const myEvent = event;
-                game.playerLogic(myEvent, "X");
-                game.checkForGameState("X", game.board);
-                if(game.gameOver === true)return;
-                let botSelect = game.getRandomInt(game.botarr.length);
-                let boxes = game.container.querySelectorAll(".tile");
-                let boxArr = Array.from(boxes);
-                for(let i=0; i<boxArr.length; i++){
-                    setTimeout(() => {
-                        if(boxArr[i].classList[1].includes(botSelect)){
-                            boxArr[i].innerText = "O";
-                            delete game.botarr[game.botarr.indexOf(botSelect)];
-                            game.botarr = game.botarr.filter(Number.isFinite);
-                            game.board[game.board.indexOf(botSelect)] = "O";
-                            game.checkForGameState("O", game.board);
-                            game.turnDisplay.innerText = `Turn: player X`;
-                        }    
-                    }, 150);
-                    
-                }
+            let isLegalMove =  game.legalMoveCheck(event);
+            if(isLegalMove === false) return;
+            game.legalMoveCheck(event);
+            game.playerLogic(event, "X");
+            game.checkForGameState("X", game.board);
+            if(isLegalMove === false) return;
+            let botSelect = game.getRandomInt(game.botarr.length);
+            let boxes = game.container.querySelectorAll(".tile");
+            let boxArr = Array.from(boxes);
+            for(let i=0; i<boxArr.length; i++){
+                setTimeout(() => {
+                    if(boxArr[i].classList[1].includes(botSelect)){
+                        boxArr[i].innerText = "O";
+                        delete game.botarr[game.botarr.indexOf(botSelect)];
+                        game.botarr = game.botarr.filter(Number.isFinite);
+                        game.board[game.board.indexOf(botSelect)] = "O";
+                        game.checkForGameState("O", game.board);
+                        game.turnDisplay.innerText = `Turn: player X`;
+                    }    
+                }, 150);
+                
             }
         },
         playerVsRandoRandy: function(){
