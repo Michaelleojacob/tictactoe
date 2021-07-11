@@ -110,6 +110,7 @@
         },
         plogic: function(event){
             if(game.gameOver === true)return;
+            if(event.target.innerText !=="")return;
             if(event.target.className.includes("tile")){
                 let myEvent = event;
                 let player = game.checkTurn(game.lastPlayer);
@@ -133,7 +134,8 @@
             e.target.innerText = p;
             delete game.botarr[game.botarr.indexOf(playerTarget)];
             game.botarr = game.botarr.filter(Number.isFinite);
-            return game.lastPlayer = p
+            game.lastPlayer = p
+            p === "X" ? game.turnDisplay.innerText = `Turn: player O` : game.turnDisplay.innerText = `Turn: player X`;
         },
         getRandomInt: function(max){
             if(max<=1)return;
@@ -160,11 +162,12 @@
                             delete game.botarr[game.botarr.indexOf(botSelect)];
                             game.botarr = game.botarr.filter(Number.isFinite);
                             game.board[game.board.indexOf(botSelect)] = "O";
+                            game.checkForGameState("O", game.board);
+                            game.turnDisplay.innerText = `Turn: player X`;
                         }    
                     }, 150);
                     
                 }
-                game.checkForGameState("O", game.board);
             }
         },
         playerVsRandoRandy: function(){

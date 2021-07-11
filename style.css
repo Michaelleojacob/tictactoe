@@ -99,3 +99,11 @@
 	border: 3px solid #555;
 	outline-offset: 0;
 }
+
+.pickopp {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 5px;
+	font-size: 18px;
+}
