@@ -28,7 +28,7 @@
         getDropDownValue:function(){
             let opponent = game.selectValue.value;
             game.selectValue.addEventListener("change", function(e){
-                game.container.removeEventListener("click", game.plogic);
+                game.container.removeEventListener("click", game.pTurnFunctionality);
                 game.container.removeEventListener("click", game.randoLogic);
                 game.playerScore = 0;
                 game.opponentScore = 0;
@@ -125,9 +125,9 @@
             else return true;
         },
         playerVsPlayer: function(){
-            game.container.addEventListener("click", game.plogic);
+            game.container.addEventListener("click", game.pTurnFunctionality);
         },
-        plogic: function(event){
+        pTurnFunctionality: function(event){
             let isLegalMove =  game.legalMoveCheck(event);
             if(isLegalMove === false) return;
             let player = game.checkTurn(game.lastPlayer);
