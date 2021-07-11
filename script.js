@@ -163,7 +163,7 @@
             game.legalMoveCheck(event);
             game.playerLogic(event, "X");
             game.checkForGameState("X", game.board);
-            if(isLegalMove === false) return;
+            if(game.gameOver === true)return;
             let botSelect = game.getRandomInt(game.botarr.length);
             let boxes = game.container.querySelectorAll(".tile");
             let boxArr = Array.from(boxes);
