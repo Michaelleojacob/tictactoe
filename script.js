@@ -30,6 +30,8 @@
             game.selectValue.addEventListener("change", function(e){
                 game.container.removeEventListener("click", game.plogic);
                 game.container.removeEventListener("click", game.randoLogic);
+                game.playerScore = 0;
+                game.opponentScore = 0;
                 //don't forget to add for thug -- when implemented.
                 opponent = e.target.value;
                 game.handleRestartLogic();
@@ -102,8 +104,6 @@
             game.lastPlayer = "O";
             game.botarr = [0,1,2,3,4,5,6,7,8];
             game.board = [0,1,2,3,4,5,6,7,8];
-            game.playerScore = 0;
-            game.opponentScore = 0;
             game.pScore.innerText = "";
             game.oppScore.innerText = "";
         },
