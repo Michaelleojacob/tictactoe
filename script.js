@@ -6,6 +6,8 @@
         lastPlayer: "O",
         opponent: "player",
         gameOver: false,
+        playerScore: 0,
+        opponentScore: 0,
         init: function(){
             this.cacheDom();
             this.displayGrid();
@@ -20,12 +22,15 @@
             this.restartbtn = this.wrapper.querySelector(".restart");
             this.turnDisplay = this.wrapper.querySelector(".turn");
             this.selectValue = this.wrapper.querySelector(".playerOrBot");
+            this.pScore = this.wrapper.querySelector(".pScore");
+            this.oppScore = this.wrapper.querySelector(".oppScore");
         },
         getDropDownValue:function(){
             let opponent = game.selectValue.value;
             game.selectValue.addEventListener("change", function(e){
                 game.container.removeEventListener("click", game.plogic);
                 game.container.removeEventListener("click", game.randoLogic);
+                //don't forget to add for thug -- when implemented.
                 opponent = e.target.value;
                 game.handleRestartLogic();
                 return game.gameinit(opponent);
@@ -54,6 +59,9 @@
             function displayResults(){
                 game.error.innerText = `player ${player} won`;
                 game.turnDisplay.innerText = `Turn: game over`;
+                player === "X" ? game.playerScore++ : game.opponentScore++ ;
+                game.pScore.innerText = `X: ${game.playerScore}`;
+                game.oppScore.innerText = `O: ${game.opponentScore}`;
                 return game.gameOver = true;
             }
             if(board[0] === player && board[1] === player && board[2] === player){
@@ -94,9 +102,12 @@
             game.lastPlayer = "O";
             game.botarr = [0,1,2,3,4,5,6,7,8];
             game.board = [0,1,2,3,4,5,6,7,8];
+            game.playerScore = 0;
+            game.opponentScore = 0;
+            game.pScore.innerText = "";
+            game.oppScore.innerText = "";
         },
         gameinit: function(opponent){
-            //if gameover = true => end game; also inits game and who opponent is.
             if(game.gameOver === true)return;
             if(opponent === "player"){
                 game.playerVsPlayer();
@@ -110,7 +121,7 @@
         },
         plogic: function(event){
             if(game.gameOver === true)return;
-            if(event.target.innerText !=="")return;
+            if(event.target.innerText !=="")return game.error.innerText = `that tile has already been selected`;
             if(event.target.className.includes("tile")){
                 let myEvent = event;
                 let player = game.checkTurn(game.lastPlayer);
@@ -147,7 +158,7 @@
         randoLogic: function(event){
             if(event.target.className.includes("tile")){
                 if(game.gameOver === true)return;
-                if(event.target.innerText !== "")return;
+                if(event.target.innerText !== "")return game.error.innerText = `that tile has already been selected`;
                 const myEvent = event;
                 game.playerLogic(myEvent, "X");
                 game.checkForGameState("X", game.board);

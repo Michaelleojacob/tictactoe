@@ -62,6 +62,7 @@
 	align-items: center;
 	margin-top: 2%;
 	font-size: 18px;
+	height: 20px;
 }
 .restart {
 	display: flex;
@@ -106,4 +107,23 @@
 	align-items: center;
 	margin: 5px;
 	font-size: 18px;
+}
+
+.score {
+	display: flex;
+	font-size: 18px;
+	justify-content: center;
+	align-items: center;
+	box-sizing: border-box;
+	height: 20px;
+	margin: 10px;
+	margin-top: 20px;
+	flex-direction: column;
+	background: brown;
+}
+.oppScore {
+	/* margin: 60px; */
+}
+.pScore {
+	/* margin: 60px; */
 }
