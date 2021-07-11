@@ -8,6 +8,6 @@
 
 # Highlight features:<br>This was an exercise using modular organization in Javascript.<br>Features a IIFE, or immediately invoked function expression.<br>IIFE makes it so you can not "hack" the app by use of the console.<br>Code is organized and easy to read and use.<br>It's entertaining.
 
-# Future additions:<br>Code refactor. I could clean up some parts, make it more modular and dry. (there is some repeating going on)<br>Adding a bot!
+# Future additions:<br>Making a minmax bot.<br>UI improvements (hover current marker)
 
 # Get in touch!:<br> michaelleojacob@gmail.com<br><a href="https://www.linkedin.com/public-profile/in/michael-leo-jacob" target="_blank">Linkedin</a><br><a href="https://https://github.com/Michaelleojacob" target="_blank">Github</a>

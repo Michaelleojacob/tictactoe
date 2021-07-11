@@ -1,0 +1,34 @@
+.header {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 22px;
+	flex-direction: column;
+	margin: 1vh;
+}
+.email {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 1vh;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	opacity: 55%;
+}
+
+.githubatag {
+	margin: 0px 1.1vh 0px 1.1vh;
+}
+
+.linkedinatag {
+	margin: 0px 1.1vh 0px 1.1vh;
+}
+
+.repoatag {
+	margin: 0px 1.1vh 0px 1.1vh;
+}
